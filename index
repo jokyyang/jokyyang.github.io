@@ -2,6 +2,16 @@
 <head>
 <!– Preliminaries go here, including title -->
 <title> Starter Page </title>
+<style>
+    body {
+        background-image: url("breathtaking-shot-silhouettes-hills-starry-sky-night.jpg");
+        background-size: cover;        
+        background-repeat: no-repeat;  
+        background-attachment: fixed;  
+        background-position: center;   
+        color: white;              
+    }
+</style>
 </head>
 <body>
 <h1>joky yang</h1>
@@ -18,9 +28,6 @@
 <p>
 <a href="https://www.youtube.com/" target="_blank">YouTube Home Page</a>.
 </p>
-
-
-
 
 <hr>
 <p>create on 2/26/26 by joky yang</p>
