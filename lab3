@@ -70,6 +70,12 @@ body{
 
 
 </div>
+<div class="col-md-6 text-center">
+    <img src="towards_the_sun_by_xlocky_.jpg" 
+         class="img-fluid rounded" 
+         alt="Lab Image" 
+         width="300">
+  </div>
 <hr>
 
 <p>Created on 3/4/2026 by Joky Yang</p>
