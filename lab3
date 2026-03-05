@@ -16,7 +16,6 @@ body{
     font-family: Arial;
 }
 
-/* Navbar */
 .navbar{
     background-color: black;
     padding: 10px;
@@ -28,12 +27,6 @@ body{
     margin-right: 15px;
 }
 
-/* Highlight current page */
-.active{
-    color: yellow;
-}
-
-/* Jumbotron */
 .jumbotron{
     text-align: center;
     padding: 60px;
@@ -45,16 +38,21 @@ body{
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
 <a href="index.html">Home</a>
 <a class="active" href="lab3.html">Lab 3</a>
 </div>
 
-<!-- JUMBOTRON -->
 <div class="jumbotron">
 <h1>Lab 3</h1>
-<h2>CSC 225 Web Development</h2>
+<h2>CSC 225</h2>
+</div>
+
+<div class="container">
+
+    <p>
+    create for lab3 
+    </p>
 </div>
 <hr>
 
