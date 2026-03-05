@@ -7,7 +7,7 @@
 <style>
 
 body{
-    background-image: url("the_view_by_xlocky");
+    background-image: url("the_view_by_xlocky.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
