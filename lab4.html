@@ -17,9 +17,13 @@
 }
 let quantity = prompt("How many box would you like?\n enter a number between 1 and 99\n one box contains 24 drinks");
 quantity = parseInt(quantity);
-        
+while(quantity < 1 || quantity > 99 || isNaN(quantity))
+{
+    quantity = prompt("Invalid amount.\nPlease enter a number between 1 and 99");
+    quantity = parseInt(quantity);
+}
 
-        let now = new Date();
+ let now = new Date();
 let hour = now.getHours();
 let greeting;
 
