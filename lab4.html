@@ -17,7 +17,7 @@
 }
 let quantity = prompt("How many box would you like?\n enter a number between 1 and 99\n one box contains 24 drinks");
 quantity = parseInt(quantity);
-        }
+        
 
         let now = new Date();
 let hour = now.getHours();
@@ -38,7 +38,13 @@ else
 
 let arrival = new Date();
 arrival.setDate(arrival.getDate() + 7);
+document.getElementById("output").innerHTML =
+greeting + " " + name + ", Thank you for Ordering!<br><br>" +
+"Drink Ordered: " + item + "<br>" +
+"Quantity: " + quantity + "<br>" +
+"Expected Arrival Date: " + arrival.toDateString();
 
+}
 </script>
 
 
