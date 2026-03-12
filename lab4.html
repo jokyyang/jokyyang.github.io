@@ -18,6 +18,23 @@
 let quantity = prompt("How many box would you like?  \n enter a number between 1 and 99 \n one box contains 24 drinks");
 quantity = parseInt(quantity);
         }
+
+        let now = new Date();
+let hour = now.getHours();
+let greeting;
+
+if(hour < 12)
+{
+    greeting = "Good Morning";
+}
+else if(hour < 18)
+{
+    greeting = "Good Afternoon";
+}
+else
+{
+    greeting = "Good Evening";
+}
 </script>
 
 
