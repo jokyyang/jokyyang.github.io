@@ -8,9 +8,15 @@
             alert("Welcome to our bulk Drink Store");
             let name = prompt("Enter your name:");
             let drinks = ["coffee","tea","water","soda","juice","milk","lemonade"];
-            let item = prompt("What drink would you like? (Coffee, Tea, Water, Soda, Juice, Milk, Lemonade)");
+            let item = prompt("What drink would you like? \n Only selecet one? \n (Coffee, Tea, Water, Soda, Juice, Milk, Lemonade)");
             item = item.toLowerCase();
-       
+            while(!drinks.includes(item))
+{
+    item = prompt("Sorry we don't have that drink. Please select one from the list: \n (Coffee, Tea, Water, Soda, Juice, Milk, Lemonade)");
+    item = item.toLowerCase();
+}
+let quantity = prompt("How many box would you like?  \n enter a number between 1 and 99 \n one box contains 24 drinks");
+quantity = parseInt(quantity);
         }
 </script>
 
