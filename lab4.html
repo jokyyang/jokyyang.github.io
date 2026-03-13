@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <style>
+        body{
+            background-image: url("santa-monica-pier.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        </style>
     <script>
         window.onload = function(){
        
@@ -23,7 +30,7 @@ while(quantity < 1 || quantity > 99 || isNaN(quantity))
     quantity = parseInt(quantity);
 }
 
- let now = new Date();
+let now = new Date();
 let hour = now.getHours();
 let greeting;
 
