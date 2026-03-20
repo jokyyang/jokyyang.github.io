@@ -139,7 +139,21 @@ function registerUser() {
             model,
             year
         }
-    };
+    };output.innerHTML = `
+        <div class="alert alert-success">
+            <h4>🚗 Registration Successful!</h4>
+            <p><strong>Name:</strong> ${user.firstName} ${user.lastName}</p>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Password:</strong> ${maskedPassword}</p>
+            <p><strong>DOB:</strong> ${user.dob}</p>
+            <hr>
+            <p><strong>Car:</strong> ${user.car.year} ${user.car.make} ${user.car.model}</p>
+        </div>
+    `;
+}
+
+    let maskedPassword = "*".repeat(user.password.length);
+</script>
 <body>
 <h1>joky yang</h1>
 <p>create on 3/19/26 by joky yang</p>
