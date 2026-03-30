@@ -34,7 +34,41 @@
             text-align: center;
             margin-top: 40px;
         }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
+        button:hover {
+            background-color: gray;
+        }
+
+        img {
+            width: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        #facts {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fact-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            margin: 10px;
+            width: 60%;
+            border-radius: 10px;
+            text-align: left;
+        }
 
     </style>
     </head>
@@ -47,3 +81,36 @@
             <a href="lab4.html">Lab 4</a>
             <a href="#"></a>
         </div>
+
+        <div class="container">
+            <h1>Cat Facts API</h1>
+    
+            <button onclick="getCatData()">Load Cat Data</button>
+    
+            <br>
+    
+            <img id="catImage" src="https://via.placeholder.com/300" alt="Cat Image">
+    
+            <div id="facts"></div>
+        </div>
+
+        <script>
+            function getCatData() {
+                fetch("https://brianobruno.github.io/cats.json")
+                    .then(response => response.json())
+                    .then(data => {
+                        let sortedFacts = data.facts.sort((a, b) => a.factId - b.factId);
+                        document.getElementById("catImage").src = data.catPhoto;
+                        let factsDiv = document.getElementById("facts");
+                        factsDiv.innerHTML = "<h2>Cat Facts</h2>";
+                        sortedFacts.forEach(fact => {
+                        let card = document.createElement("div");
+                        card.className = "fact-card";
+                        card.textContent = fact.factId + ". " + fact.text;
+                        factsDiv.appendChild(card);
+                    });
+                });
+            }
+        </script>
+    </body>
+    </html>
