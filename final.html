@@ -29,10 +29,6 @@
     text-decoration: underline;
 }
 
-.jumbotron{
-    text-align: center;
-    padding: 60px;
-}
 
 </style>
 </head>
@@ -46,4 +42,28 @@
         <a href="lab6.html">Lab 6</a>
         </div>
 </style>
-<body>
+<body
+<div id="page-home">
+    <div class="container-fluid py-4 px-4">
+        <h1 class="mb-1" style="color:#00e700">Kick Live Streams</h1>
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0" id="streams-table" style="display:none">
+                <thead>
+                    <tr>
+                      <th style="width:64px">Thumb</th>
+                      <th>Channel</th>
+                      <th>Stream Title</th>
+                      <th>Category</th>
+                      <th>Viewers</th>
+                      <th>Language</th>
+                      <th>Started</th>
+                      <th>Mature</th>
+                    </tr>
+                  </thead>
+                  <tbody id="streams-body"></tbody>
+                </table>
+              </div>
+            </div>
+        </div> 
+</body>
+</html>
