@@ -63,7 +63,7 @@
                       <th>Stream Title</th>
                       <th>Category</th>
                       <th>Viewers</th>
-                      <th>Language</th>
+                      <th>Language</th> 
                       <th>Started</th>
                       <th>Mature</th>
                     </tr>
@@ -74,12 +74,70 @@
             </div>
         </div> 
 
-        <script>
-           const ACCESS_TOKEN =''//get from https://www.kicktokengenerator.com/
+    <script>
+           const ACCESS_TOKEN ='ZGUZZDQ1M2QTYJNJMI0ZNJHILWE5Y2QTMTM2NJRIMDG3ODYZ'//get from https://www.kicktokengenerator.com/
            const API = 'https://api.kick.com/public/v1';
 
-           
-        </script>
+
+           let allStreams = [];
+ 
+
+           async function loadStreams() {
+  const messageDiv = document.getElementById('home-msg');
+  const table = document.getElementById('streams-table');
+  const tableBody = document.getElementById('streams-body');
+
+  try {
+    const response = await fetch(`${API}/livestreams`, {
+      headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }
+    });
+    
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    
+    const { data } = await response.json();
+    allStreams = data || [];
+    messageDiv.textContent = '';
+if (!allStreams.length) {
+      messageDiv.textContent = 'No streams live right now.'; //like thats gonna happen
+      return;
+    }
+
+    tableBody.innerHTML = allStreams.map(stream => `
+      <tr onclick="showDetail('${stream.slug}')">
+        <td>
+          <img src="${stream.thumbnail || ''}" 
+               class="thumb-sm" 
+               onerror="this.style.background='#222';this.removeAttribute('src')" 
+               alt="${stream.slug}">
+        </td>
+        <td class="fw-semibold">${stream.slug}</td>
+        <td style="max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#aaa;font-size:0.88rem">
+          ${stream.stream_title || 'Untitled'}
+        </td>
+        <td class="category-cell">${stream.category?.name || '—'}</td>
+        <td class="viewers-cell">${stream.viewer_count || 0}</td>
+        <td class="lang-cell">${(stream.language || '—').toUpperCase()}</td>
+        <td style="color:#888;font-size:0.82rem">${timeAgo(stream.started_at)}</td>
+        <td>${stream.has_mature_content ? '<span class="badge bg-danger">18+</span>' : '<span style="color:#444">—</span>'}</td>
+      </tr>
+    `).join('');
+    
+    table.style.display = '';
+
+function timeAgo(iso) {
+  if (!iso) return '—';
+  const minutes = Math.floor((Date.now() - new Date(iso)) / 60000);
+  if (minutes < 60) return `${minutes} minutes ago`;
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours} hour${hours > 1 ? 's' : ''} ${mins} min${mins !== 1 ? 's' : ''} ago`;
+}
+} catch (e) {
+    tbody.innerHTML = '<tr><td colspan="8" class="text-danger">Failed to load streams</td></tr>';
+  }
+}
+
+    </script>
 
 </body>
 </html>
