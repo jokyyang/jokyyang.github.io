@@ -107,8 +107,22 @@
         </div> 
 
     <script>
-           const ACCESS_TOKEN ='NJZLNJE0NJGTNDQ3NS0ZY2I2LTGXY2MTZTZKZTMZZMRKNDZM';//get from https://www.kicktokengenerator.com/
-           const API = 'https://api.kick.com/public/v1';
+           let ACCESS_TOKEN = '';
+
+async function getToken() {
+  const response = await fetch('https://id.kick.com/oauth/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type:    'client_credentials',
+      client_id:     '01KPEXZEFWPGV20A8TW2VBKZSK',
+      client_secret: '0b86050649d48a0115810449b1de2ccab2d22069b4f43d5bfc963ffc8d0206a5'
+    })
+  });
+
+  const data = await response.json();
+  ACCESS_TOKEN = data.access_token;
+}           const API = 'https://api.kick.com/public/v1';
 
            function timeAgo(iso) {
   if (!iso) return '—';
@@ -171,7 +185,7 @@ if (!allStreams.length) {
     tableBody.innerHTML = '<tr><td colspan="8" class="text-danger">Failed to load streams</td></tr>';
   }
 }
-loadStreams();
+getToken().then(() => loadStreams());
     </script>
 
 </body>
