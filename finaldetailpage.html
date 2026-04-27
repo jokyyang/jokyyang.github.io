@@ -49,11 +49,16 @@
 
         const { data } = await response.json();
         const ch = (Array.isArray(data) ? data[0] : data) || {};
+        const langMap = {
+  en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French',
+  de: 'German',  ko: 'Korean',  ja: 'Japanese',   ru: 'Russian',
+  it: 'Italian', ar: 'Arabic',  zh: 'Chinese',     tr: 'Turkish'
+};
 
         const title         = ch.stream_title         || 'Untitled';
         const category      = ch.category?.name       || '—';
         const categoryId    = ch.category?.id         || '—';
-        const language      = ch.stream?.language     || '—';
+        const language = langMap[ch.stream?.language] || ch.stream?.language || '—';
         const viewerCount   = ch.stream?.viewer_count || 0;
         const startedAt     = ch.stream?.start_time   || null;
         const isLive        = ch.stream?.is_live      ?? false;
@@ -77,7 +82,7 @@
                 <tr><td>Stream Title</td><td>${title}</td></tr>
                 <tr><td>Category</td><td>${category}</td></tr>
                 <tr><td>Category ID</td><td>${categoryId}</td></tr>
-                <tr><td>Language</td><td>${language.toUpperCase()}</td></tr>
+                <tr><td>Language</td><td>${language}</td></tr>
                 <tr><td>Viewer Count</td><td style="color:#00e700;font-weight:700">${viewerCount.toLocaleString()}</td></tr>
                 <tr><td>Stream Duration</td><td>${duration}</td></tr>
                 <tr><td>Started At</td><td>${startedAt ? new Date(startedAt).toLocaleString() : '—'}</td></tr>
