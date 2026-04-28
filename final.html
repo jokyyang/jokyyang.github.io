@@ -136,7 +136,7 @@ async function getToken() {
            let allStreams = [];
            
            function showDetail(slug) { 
-            window.location.href = `finaldetailpage.html?slug=${slug}`;
+           window.location.href = `finaldetailpage.html?slug=${encodeURIComponent(stream.slug)}&tags=${encodeURIComponent(JSON.stringify(stream.custom_tags || []))}`;
             }
 
            async function loadStreams() {
