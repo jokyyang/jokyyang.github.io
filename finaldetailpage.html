@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<title> kick stream details </title>
+<style>
+    body {
+        background: rgb(1, 1, 59);
+        color: white;               
+        }
+
+    .back-btn { background: none; border: none; color: #888; font-size: 0.9rem; cursor: pointer; padding: 0; }
+    .back-btn:hover { color: #00e700; }
+    .info-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .info-table thead th { background: #0a0a2a; color: gray; font-size: 0.75rem; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid #2a2a2a; }
+    .info-table tbody td { padding: 9px 12px; border-bottom: 1px solid #0a0a2a; }
+    .info-table tbody td:first-child { color: gray; width: 40%; }
+    .info-table tbody tr:hover td { background: #0a0a2a; }
+    .section-card { background: #0a0a2a; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; }
+    .sc-header { padding: 10px 14px; border-bottom: 1px solid #2a2a2a; font-size: 0.72rem; color: gray; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+    <div class="container-fluid py-4 px-4">
+    <button class="back-btn mb-4" onclick="window.location.href='final.html'">← Back to streams</button>
+    <div id="detail-content"><p style="color:gray">Loading…</p></div>
+  </div>
+<script>
+           let ACCESS_TOKEN = '';
+
+async function getToken() {
+  const response = await fetch('https://id.kick.com/oauth/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type:    'client_credentials',
+      client_id:     '01KPEXZEFWPGV20A8TW2VBKZSK',
+      client_secret: '0b86050649d48a0115810449b1de2ccab2d22069b4f43d5bfc963ffc8d0206a5'
+    })
+  });
+
+  const data = await response.json();
+  ACCESS_TOKEN = data.access_token;
+}
+           const API = 'https://api.kick.com/public/v1';
+           
+           const slug = new URLSearchParams(window.location.search).get('slug');
+
+            async function loadDetail() {
+      const content = document.getElementById('detail-content');
+
+      if (!slug) {
+        content.innerHTML = '<p class="text-danger">No channel specified.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API}/channels?slug=${encodeURIComponent(slug)}`, {
+          headers: { Authorization: `Bearer ${ACCESS_TOKEN}` }
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const { data } = await response.json();
+        const ch = (Array.isArray(data) ? data[0] : data) || {};
+        const langMap = {
+  en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French',
+  de: 'German',  ko: 'Korean',  ja: 'Japanese',   ru: 'Russian',
+  it: 'Italian', ar: 'Arabic',  zh: 'Chinese',     tr: 'Turkish'
+};
+
+        const title         = ch.stream_title         || 'Untitled';
+        const category      = ch.category?.name       || '—';
+        const categoryId    = ch.category?.id         || '—';
+        const language = langMap[ch.stream?.language] || ch.stream?.language || '—';
+        const viewerCount   = ch.stream?.viewer_count || 0;
+        const startedAt     = ch.stream?.start_time   || null;
+        const isLive        = ch.stream?.is_live      ?? false;
+        const description   = ch.channel_description  || null;
+        const broadcasterId = ch.broadcaster_user_id  || '—';
+
+        const durationMins = startedAt ? Math.floor((Date.now() - new Date(startedAt)) / 60000) : null;
+        const duration = durationMins !== null ? `${Math.floor(durationMins / 60)}h ${durationMins % 60}m` : '—';
+
+        content.innerHTML = `
+          <h1 style="color:#00e700">${slug} ${isLive ? '<span class="badge" style="background:#00e700;color:black;font-size:0.7rem">● LIVE</span>' : ''}</h1>
+          <p style="color:#aaa;margin-bottom:1.5rem">${title}</p>
+
+          <div class="section-card mb-4">
+            <div class="sc-header">Stream Details</div>
+            <table class="info-table">
+              <thead><tr><th>Field</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Channel</td><td>${slug}</td></tr>
+                <tr><td>Broadcaster ID</td><td>${broadcasterId}</td></tr>
+                <tr><td>Stream Title</td><td>${title}</td></tr>
+                <tr><td>Category</td><td>${category}</td></tr>
+                <tr><td>Category ID</td><td>${categoryId}</td></tr>
+                <tr><td>Language</td><td>${language}</td></tr>
+                <tr><td>Viewer Count</td><td style="color:#00e700;font-weight:700">${viewerCount.toLocaleString()}</td></tr>
+                <tr><td>Stream Duration</td><td>${duration}</td></tr>
+                <tr><td>Started At</td><td>${startedAt ? new Date(startedAt).toLocaleString() : '—'}</td></tr>
+                <tr><td>Status</td><td style="color:#00e700">${isLive ? '● Live' : 'Offline'}</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          ${description ? `
+            <div class="section-card">
+              <div class="sc-header">About</div>
+              <div style="padding:1rem;color:#aaa;font-size:0.88rem;line-height:1.6">${description}</div>
+            </div>` : ''}
+        `;
+
+      } catch (e) {
+        content.innerHTML = `<p class="text-danger">Failed to load channel: ${e.message}</p>`;
+      }
+    }
+
+    getToken().then(() => loadDetail());
+</script>
+</body>
+</html>
