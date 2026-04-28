@@ -84,7 +84,6 @@ async function getToken() {
         const duration = durationMins !== null ? `${Math.floor(durationMins / 60)}h ${durationMins % 60}m` : '—';
 
         content.innerHTML = `
-          <h1 style="color:#00e700">${slug} ${isLive ? '<span class="badge" style="background:#00e700;color:black;font-size:0.7rem">● LIVE</span>' : ''}</h1>
           <p style="color:#aaa;margin-bottom:1.5rem">${title}</p>
 
           <div class="section-card mb-4">
