@@ -99,6 +99,7 @@
                       <th>Language</th> 
                       <th>Started</th>
                       <th>Mature</th>
+                      <th>Tags</th>
                     </tr>
                   </thead>
                   <tbody id="streams-body"></tbody>
@@ -176,6 +177,7 @@ if (!allStreams.length) {
         <td class="lang-cell">${(stream.language || '—').toUpperCase()}</td>
         <td style="color:#888;font-size:0.82rem">${timeAgo(stream.started_at)}</td>
         <td>${stream.has_mature_content ? '<span class="badge bg-danger">18+</span>' : '<span style="color:#444">—</span>'}</td>
+        <td style="font-size:0.8rem;color:gray">${stream.custom_tags?.length ? stream.custom_tags.join(', ') : '—'}</td>
       </tr>
     `).join('');
     
