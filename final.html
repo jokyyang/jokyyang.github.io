@@ -85,8 +85,23 @@
     <div class="container-fluid py-4 px-4">
         
         <h1 class="mb-1" style="color:#00e700">Kick Live Streams</h1>
-        <div id="home-msg"></div>
-        <h5 style="color:#00e700a9">Top Livestream By View</h5>
+        <div class="mb-3 d-flex gap-3 flex-wrap">
+  <select id="langFilter" onchange="applyFilters()" style="background:#0a0a2a;color:white;border:1px solid #575353;padding:6px 12px;border-radius:6px;">
+    <option value="">All Languages</option>
+    <option value="EN">English</option>
+    <option value="ES">Spanish</option>
+    <option value="PT">Portuguese</option>
+    <option value="FR">French</option>
+    <option value="DE">German</option>
+    <option value="KO">Korean</option>
+    <option value="JA">Japanese</option>
+  </select>
+
+  <select id="sortFilter" onchange="applyFilters()" style="background:#0a0a2a;color:white;border:1px solid #575353;padding:6px 12px;border-radius:6px;">
+    <option value="desc">Most Viewers</option>
+    <option value="asc">Least Viewers</option>
+  </select>
+</div>
         <div class="table-responsive">
             <table class="table table-dark table-hover align-middle mb-0" id="streams-table" style="display:none">
                 <thead>
@@ -122,7 +137,7 @@ async function getToken() {
     })
   });
 
-  const data = await response.json();
+  const data = await response.json(); 
   ACCESS_TOKEN = data.access_token;
 }           const API = 'https://api.kick.com/public/v1';
 
@@ -188,6 +203,48 @@ if (!allStreams.length) {
     tableBody.innerHTML = '<tr><td colspan="9" class="text-danger">Failed to load streams</td></tr>';
   }
 }
+function applyFilters() {
+  const lang   = document.getElementById('langFilter').value;
+  const sort   = document.getElementById('sortFilter').value;
+  const tableBody = document.getElementById('streams-body');
+
+  let filtered = [...allStreams];
+
+  if (lang) {
+    filtered = filtered.filter(s => (s.language || '').toUpperCase() === lang);
+  }
+
+  filtered.sort((a, b) => sort === 'asc'
+    ? (a.viewer_count || 0) - (b.viewer_count || 0)
+    : (b.viewer_count || 0) - (a.viewer_count || 0)
+  );
+
+  if (!filtered.length) {
+    tableBody.innerHTML = '<tr><td colspan="9" style="color:gray">No streams match the filter.</td></tr>';
+    return;
+  }
+     tableBody.innerHTML = filtered.map(stream => `
+    <tr onclick="showDetail('${stream.slug}')">
+      <td>
+        <img src="${stream.thumbnail || ''}" 
+             class="thumb-sm" 
+             onerror="this.style.background='#222';this.removeAttribute('src')" 
+             alt="${stream.slug}">
+      </td>
+      <td class="fw-semibold">${stream.slug}</td>
+      <td style="max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#aaa;font-size:0.88rem">
+        ${stream.stream_title || 'Untitled'}
+      </td>
+      <td class="category-cell">${stream.category?.name || '—'}</td>
+      <td class="viewers-cell">${stream.viewer_count || 0}</td>
+      <td class="lang-cell">${(stream.language || '—').toUpperCase()}</td>
+      <td style="color:#888;font-size:0.82rem">${timeAgo(stream.started_at)}</td>
+      <td>${stream.has_mature_content ? '<span class="badge bg-danger">18+</span>' : '<span style="color:#444">—</span>'}</td>
+      <td style="font-size:0.8rem;color:gray">${stream.custom_tags?.length ? stream.custom_tags.join(', ') : '—'}</td>
+    </tr>
+  `).join('');
+}
+
 getToken().then(() => loadStreams());
     </script>
 
